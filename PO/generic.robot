@@ -4,8 +4,7 @@ Resource  ../PO/login_page_mail.robot
 Resource  ../PO/login_page_password.robot
 Variables  ../Data/Configuration.yaml
 
-*** Variables ***
-${login_url}                 https://www.amazon.com.tr
+*** Variables ***           
 ${valid_username}            bahadirbayazit.test@gmail.com
 ${valid_password}            amazon.test
 ${home_button}               nav-logo-sprites
@@ -18,19 +17,13 @@ ${delete_button}             //input[@data-action='delete']
 
 ${browser}  ${EMPTY}
 *** Keywords ***
-Open browser of
-    [Documentation]  Browser can be -> (headless)chrome , (headless)firefox
-    [Arguments]  ${browser}
-
-    Open Browser  ${login_url}  ${browser}
-
 Open Amazon Browser
     [Documentation]
     ${browser_options} =  Evaluate  sys.modules['selenium.webdriver'].${browser}Options()  sys, selenium.webdriver
     Call Method  ${browser_options}  add_argument  --ignore-certificate-errors
     Call Method  ${browser_options}  add_argument  --ignore-ssl-errors
     ${options} =  Call Method  ${browser_options}  to_capabilities
-    Open Browser  ${SWAGLABS.URL}  browser=${browser}  remote_url=http://selenium-hub:4444/wd/hub  desired_capabilities=${options}
+    Open Browser  ${AMAZON.URL}  browser=${browser}  remote_url=http://selenium-hub:4444/wd/hub  desired_capabilities=${options}
     Maximize Browser Window
     Set Selenium Speed  0
     Set Selenium Timeout  5
