@@ -2,7 +2,7 @@
 Library  SeleniumLibrary
 Resource  ../PO/login_page_mail.robot
 Resource  ../PO/login_page_password.robot
-Variables  ../Data/Configuration.yaml
+Variables  ../data/Configuration.yaml
 
 *** Variables ***           
 ${valid_username}            bahadirbayazit.test@gmail.com
@@ -16,6 +16,8 @@ ${cart_button}               nav-cart-count-container
 ${delete_button}             //input[@data-action='delete']
 
 ${browser}  ${EMPTY}
+${tags}  ${EMPTY}
+
 *** Keywords ***
 Open Amazon Browser
     [Documentation]
@@ -37,7 +39,7 @@ Default Test Setup
     log to console  DEFAULT TEST SETUP IS COMPLETED...
 
 Default Test Teardown
-    [Documentation]  Ends the session and closes the browser
+    [Documentation]  Ends the session and closes the browsers
 #   Wait Until Element Is Visible  ${home_button}
 #    click element  ${home_button}
 #    Sleep  1
@@ -45,7 +47,9 @@ Default Test Teardown
     #exit button cannot be found
 #    Wait Until Element Is Visible  ${exit_button}
 #    click element  ${exit_button}
-    Close Browser
+    log to console  DEFAULT TEST TEARDOWN IS STARTED...
+    Close All Browsers
+    log to console  DEFAULT TEST TEARDOWN IS COMPLETED...
 
 Login with test account
     [Tags]  SMOKE
