@@ -52,3 +52,14 @@ services:
     ports:
       - "1903:5900"
     container_name: firefox
+
+  robot-test:
+    image: test-execution
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - '../.:/tmp/.'
+    depends_on:
+      - selenium-hub
+    entrypoint: tail -f /dev/null
+    container_name: test-execution
