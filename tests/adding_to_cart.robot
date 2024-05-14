@@ -22,5 +22,3 @@ Add a Product to the Cart
     Add to cart
     # Postcondition
     Clear Chart
-
-# add verification of the cart
