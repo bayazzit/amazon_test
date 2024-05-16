@@ -24,8 +24,13 @@ Open Amazon Browser
     ${browser_options} =  Evaluate  sys.modules['selenium.webdriver'].${browser}Options()  sys, selenium.webdriver
     Call Method  ${browser_options}  add_argument  --ignore-certificate-errors
     Call Method  ${browser_options}  add_argument  --ignore-ssl-errors
-    ${options} =  Call Method  ${browser_options}  to_capabilities
-    Open Browser  ${AMAZON.URL}  browser=${browser}  remote_url=http://selenium-hub:4444/wd/hub  desired_capabilities=${options}
+    Call Method  ${browser_options}  add_argument  --disable-gpu
+    Call Method  ${browser_options}  add_argument  --no-sandbox
+    Call Method  ${browser_options}  add_argument  --disable-setuid-sandbox
+    Call Method  ${browser_options}  add_argument  --disable-dev-shm-usage
+    Call Method  ${browser_options}  add_argument  --start-maximized
+    #${options} =  Call Method  ${browser_options}  to_capabilities
+    Open Browser  ${AMAZON.URL}  browser=${browser}  remote_url=http://selenium-hub:4444/wd/hub  options=${browser_options}
     Maximize Browser Window
     Set Selenium Speed  0
     Set Selenium Timeout  5

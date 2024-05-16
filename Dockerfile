@@ -1,11 +1,9 @@
-FROM  python:3.9
+FROM  python:3.10
 
-WORKDIR  /app
+WORKDIR  /tmp/amazon_test-main
 
-COPY requirements.txt requirements.txt
+COPY . .
 
-RUN pip install -r requirements.txt
+COPY requirements.txt .
 
-COPY  . /app
-
-CMD  ["robot", "tests"]
+RUN pip3 install -r requirements.txt
