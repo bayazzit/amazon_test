@@ -12,9 +12,9 @@ Resource  ../PO/product_page.robot
 
 *** Test Cases ***
 Add a Product to the Cart
-    # Precondition
-    Login with test account
-    # Actual Test
+    # Allow cookies
+    Allow Cookies for Amazon
+    # Actual test
     Search from search bar to  microsoft arc mouse
     Select the first product
     Check if product title contains  microsoft

@@ -15,8 +15,7 @@ ${top_item}  (//a[@class='a-link-normal s-underline-text s-underline-link-text s
 Filter Test for Price
     [Documentation]  The aim of this test is to check if price filteration is working.
 
-    # Initialization
-    maximize browser window
+    # Initial steps
     Allow Cookies for Amazon
     Search from search bar to  book
 
