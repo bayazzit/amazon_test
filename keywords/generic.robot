@@ -45,4 +45,3 @@ Default Test Teardown
 Go to cart
     [Documentation]  This keyword goes to cart
     Click Element  ${go_to_cart}
-    
