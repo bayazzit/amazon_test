@@ -3,7 +3,7 @@ Documentation  This test case aims to test if a product can be added to the cart
 Library  SeleniumLibrary
 Suite Setup  Default Test Setup
 Suite Teardown  Default Test Teardown
-Resource  ../PO/generic.robot
+Resource  ../keywords/generic.robot
 
 *** Test Cases ***
 Add a Product to the Cart
