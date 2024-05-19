@@ -4,6 +4,10 @@ Library          SeleniumLibrary
 Resource         generic.robot
 Variables        ../locators/locators.py
 
+*** Variables ***
+${valid_username}  standard_user
+${valid_password}  secret_sauce
+
 *** Keywords ***
 Login with standard account
     [Documentation]  This keyword logins with standard user account
