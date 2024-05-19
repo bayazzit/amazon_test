@@ -1,6 +1,6 @@
 FROM  python:3.10
 
-WORKDIR  /tmp/amazon_test-main
+WORKDIR  /tmp/saucedemo_test-main
 
 COPY . .
 

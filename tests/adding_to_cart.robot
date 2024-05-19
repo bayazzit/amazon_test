@@ -1,24 +1,16 @@
 *** Settings ***
-Documentation  Login Test
+Documentation  This test case aims to test if a product can be added to the cart
 Library  SeleniumLibrary
 Suite Setup  Default Test Setup
 Suite Teardown  Default Test Teardown
 Resource  ../PO/generic.robot
-Resource  ../PO/login_page_mail.robot
-Resource  ../PO/login_page_password.robot
-Resource  ../PO/main_page.robot
-Resource  ../PO/searched_products_page.robot
-Resource  ../PO/product_page.robot
 
 *** Test Cases ***
 Add a Product to the Cart
-    # Allow cookies
-    Allow Cookies for Amazon
-    # Actual test
-    Search from search bar to  microsoft arc mouse
-    Select the first product
-    Check if product title contains  microsoft
-    Check if product title contains  arc
-    Add to cart
-    # Postcondition
-    Clear Chart
+    # Get the item
+    Get inside to backpack item
+    Check if product title contains  backpack
+    # Add item to cart and check
+    Add item to cart
+    Go to cart
+    Check if item name contains  backpack

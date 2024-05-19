@@ -1,25 +1,16 @@
 *** Settings ***
 Library  SeleniumLibrary
-Resource  ../PO/login_page_mail.robot
-Resource  ../PO/login_page_password.robot
+Resource  cart_page.robot
+Resource  login_page.robot
+Resource  products_page.robot
 Variables  ../data/Configuration.yaml
 
 *** Variables ***           
-${valid_username}            bahadirbayazit.test@gmail.com
-${valid_password}            amazon.test
-${home_button}               nav-logo-sprites
-${accounts_and_lists_tab}    nav-link-accountList-nav-line-1
-${exit_button}               a[id='nav-item-signout'] span[class='nav-text']
-${search_bar}                twotabsearchtextbox
-${search_button}             nav-search-submit-button
-${cart_button}               nav-cart-count-container
-${delete_button}             //input[@data-action='delete']
-
 ${browser}  ${EMPTY}
 ${tags}  ${EMPTY}
 
 *** Keywords ***
-Open Amazon Browser
+Open Saucedemo Browser
     [Documentation]
     ${browser_options} =  Evaluate  sys.modules['selenium.webdriver'].${browser}Options()  sys, selenium.webdriver
     Call Method  ${browser_options}  add_argument  --ignore-certificate-errors
@@ -30,7 +21,7 @@ Open Amazon Browser
     Call Method  ${browser_options}  add_argument  --disable-dev-shm-usage
     Call Method  ${browser_options}  add_argument  --start-maximized
     #${options} =  Call Method  ${browser_options}  to_capabilities
-    Open Browser  ${AMAZON.URL}  browser=${browser}  remote_url=http://selenium-hub:4444/wd/hub  options=${browser_options}
+    Open Browser  ${SAUCEDEMO.URL}  browser=${browser}  remote_url=http://selenium-hub:4444/wd/hub  options=${browser_options}
     Maximize Browser Window
     Set Selenium Speed  0
     Set Selenium Timeout  5
@@ -39,50 +30,19 @@ Open Amazon Browser
 Default Test Setup
     [Documentation]  This keyword opens the browser and starts the session.
     log to console  DEFAULT TEST SETUP IS STARTED...
-    Open Amazon Browser
-    Login with test account
+    Open Saucedemo Browser
+    Login with standard account
     log to console  DEFAULT TEST SETUP IS COMPLETED...
 
 Default Test Teardown
     [Documentation]  Ends the session and closes the browsers
-#   Wait Until Element Is Visible  ${home_button}
-#    click element  ${home_button}
-#    Sleep  1
-#    mouse over  ${accounts_and_lists_tab}
-    #exit button cannot be found
-#    Wait Until Element Is Visible  ${exit_button}
-#    click element  ${exit_button}
     log to console  DEFAULT TEST TEARDOWN IS STARTED...
+    Go to cart
+    Clear Chart
     Close All Browsers
     log to console  DEFAULT TEST TEARDOWN IS COMPLETED...
-
-Login with test account
-    [Tags]  SMOKE
-    Allow Cookies for Amazon
-    Enter mail address and continue  ${valid_username}
-    Enter password and sign in  ${valid_password}
-
-Allow Cookies for Amazon
-      Run Keyword And Ignore Error  Click Element  sp-cc-accept
     
-Search from search bar to
-    [Documentation]  Search any text -> String from the search bar at any page
-    [Arguments]  ${text}
-    Wait Until Element Is Visible  ${search_bar}
-    Input Text  ${search_bar}  ${text}
-    Click Button  ${search_button}
-    Sleep  1
-
-Clear Chart
-    [Documentation]  This keyword clears all products into the Cart
-    Click Element  ${cart_button}
-    FOR  ${_}  IN RANGE  100
-        ${status}  Run Keyword And Return Status  Click Element  ${delete_button}
-        exit for loop if  not ${status}
-        Sleep  2
-    END
-
-Wait for the element
-    [Arguments]  ${element}
-    Wait Until Element Is Visible  ${element}  30
+Go to cart
+    [Documentation]  This keyword goes to cart
+    Click Element  ${go_to_cart}
     
