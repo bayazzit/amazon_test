@@ -44,4 +44,5 @@ Default Test Teardown
     
 Go to cart
     [Documentation]  This keyword goes to cart
+    Wait Until Element Is Visible  ${go_to_cart}
     Click Element  ${go_to_cart}
