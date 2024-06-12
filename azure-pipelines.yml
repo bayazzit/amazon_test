@@ -1,32 +1,53 @@
 trigger:
-- master
+- saucedemo_docker
 
-jobs:
+pool: 
+   name: test
+   demands:
+    - agent.name -equals saucedemo
 
-- job: 'Test'
-  pool:
-    vmImage: 'windows-latest'
-  strategy:
-    matrix:
-      Python39:
-        python.version: '3.9'
-    maxParallel: 1
+stages:
+- stage: Setup_Test_Automation
+  jobs:
+  - job: Setup_Test_Automation
+    steps:
+    - script: |
+        docker compose -f docker-compose.yaml up -d
+      displayName: Check and install packages and dependecies
 
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-      architecture: 'x64'
-
-  - script: pip install robotframework robotframework-seleniumlibrary allure-robotframework
-    displayName: 'Run robot installation'
-  - powershell: robot --listener 'allure_robotframework;./results/allure' ./TestCases; exit 0
-    displayName: 'Run Robot Scripts'
-  - powershell: allure serve results/allure
-    displayName: 'Execute Results'
-
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: outputxunit.xml
+- stage: Execute_Tests_And_Publish_Results
+  jobs:
+  - job: Execute_Tests_And_Publish_Results
+    condition: succeededOrFailed()
+    steps:
+    - checkout: none
+    - script: |
+        docker exec test-execution pabot --pabotlib --processes 3 --verbose --argumentfile1 data/Firefox.args --argumentfile2 data/Chrome.args --argumentfile3 data/Edge.args --pythonpath . -x outputxunit.xml --outputdir TestResults tests/adding_to_cart.robot
+      displayName: Execute Automated Test
       condition: succeededOrFailed()
-      displayName: 'Publish Test Results outputxunit.xml'
+    - task: PublishHtmlReport@1
+      displayName: 'Publish HTML Report'
+      inputs:
+        reportDir: 'TestResults/log.html'
+        condition: succeededOrFailed()
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      inputs:
+        testResultsFiles: TestResults/outputxunit.xml
+        publishRunAttachments: true
+        condition: succeededOrFailed()
+
+- stage: Remove_All_Containers
+  jobs:
+  - job: Remove_All_Containers
+    steps:
+    - checkout: none
+    - script: |
+        docker rm test-execution -f
+        docker rm chrome -f
+        docker rm firefox -f
+        docker rm edge -f
+        docker rm selenium-hub -f
+        docker ps -a
+        docker images
+      displayName: Remove all containers
